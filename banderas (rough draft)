@@ -1,0 +1,110 @@
+from tkinter import *
+from PIL import ImageTk, Image
+from random import randint
+
+root = Tk()
+root.title('capitales y países del mundo hispanohablante')
+root.geometry("500x600")
+
+#Create randomizing pais function
+#def random_pais():
+    #Create a list of paises
+    #global our_paises
+    #our_paises = ['Argentina', 'Colombia', 'Peru']
+
+
+#Create answer function
+def pais_answer():
+    answer = answer_input.get()
+    answer = answer.replace(" ", "")
+
+    #Determine if answer is correct or incorrect
+    if answer.capitalize() == our_paises[rando]:
+        response = "Correcto"
+    else:
+        response = "Incorrecto"
+
+    answer_label.config(text=response)
+
+    #answer_label.config(text=answer_input.get().capitalize())
+
+#Create paises flashcard function
+def paises():
+    #Hide previous frames
+    hide_all_frames()
+    pais_frame.pack(fill='both', expand=1)
+    my_label = Label(pais_frame, text="países").pack()
+
+#Create button to randomize pais images
+    global answer_input
+
+    answer_input = Entry(pais_frame, font=("Helvetica", 18))
+    answer_input.pack(pady=15)
+
+    random_button = Button(pais_frame, text='pasar', command=paises)
+    random_button.pack(pady=20)
+
+    #Create a label to signify correct answer
+    global answer_label
+
+    answer_label = Label(pais_frame, text='', font=("Helvetica", 18))
+    answer_label.pack(pady=15)
+
+#Create a button to answer question
+
+    answer_button = Button(pais_frame, text='respuesta', command=pais_answer)
+    answer_button.pack(pady=5)
+
+#Create a list of paises
+    global our_paises
+    our_paises = ['Argentina', 'Colombia', 'Peru']
+
+#Generate random number
+    global rando
+    rando = randint(0, len(our_paises)-1)
+    pais = "paises/" + our_paises[rando] + ".png"
+
+#Create our pais images
+    global pais_image
+    pais_image = ImageTk.PhotoImage(Image.open(pais))
+    show_pais = Label(pais_frame, image=pais_image)
+    show_pais.pack(pady=15)
+
+
+#Create capitales/card function
+def capitales():
+    #Hide previous frames
+    hide_all_frames()
+    capital_frame.pack(fill='both', expand=1)
+    my_label = Label(capital_frame, text="capitales").pack()
+
+#Hide all previous frames
+def hide_all_frames():
+    #Loop thru and destroy all children in previous frames
+    for widget in pais_frame.winfo_children():
+        widget.destroy()
+
+        for widget in capital_frame.winfo_children():
+            widget.destroy()
+
+    pais_frame.pack_forget()
+    capital_frame.pack_forget()
+
+#Create menu
+my_menu = Menu(root)
+root.config(menu=my_menu)
+
+#Create menu items
+paises_menu = Menu(my_menu)
+my_menu.add_cascade(label='Países o Capitales', menu=paises_menu)
+paises_menu.add_command(label="países", command=paises)
+paises_menu.add_command(label="capitales", command=capitales)
+paises_menu.add_separator()
+paises_menu.add_command(label="exit", command=root.quit)
+
+#Create frames
+pais_frame = Frame(root, width=500, height=500)
+capital_frame = Frame(root, width=500, height=500)
+
+root.mainloop()
+
