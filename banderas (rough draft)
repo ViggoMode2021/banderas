@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from random import randint
 
+
 root = Tk()
 root.title('capitales y países del mundo hispanohablante')
 root.geometry("500x600")
@@ -57,7 +58,7 @@ def paises():
 
 #Create a list of paises
     global our_paises
-    our_paises = ['Argentina', 'Colombia', 'Peru']
+    our_paises = ['Argentina', 'Colombia', 'Peru', 'Venezuela', 'Ecuador', 'Chile', 'Bolivia', 'Paraguay', 'Uruguay']
 
 #Generate random number
     global rando
@@ -70,6 +71,20 @@ def paises():
     show_pais = Label(pais_frame, image=pais_image)
     show_pais.pack(pady=15)
 
+#Create answer 2 function
+def capital_answer():
+    answer_two = answer_input_two.get()
+    answer_two = answer_two.replace(" ", "")
+
+    #Determine if answer is correct or incorrect
+    if answer_two.capitalize() == our_capitales[rando_two]:
+        response = "Correcto"
+    else:
+        response = "Incorrecto"
+
+    answer_label_two.config(text=response)
+
+    #answer_label_two.config(text=answer_input_two.get().capitalize())
 
 #Create capitales/card function
 def capitales():
@@ -78,14 +93,49 @@ def capitales():
     capital_frame.pack(fill='both', expand=1)
     my_label = Label(capital_frame, text="capitales").pack()
 
+    #Create button to randomize capital images
+    global answer_input_two
+
+    answer_input_two = Entry(capital_frame, font=("Helvetica", 18))
+    answer_input_two.pack(pady=15)
+
+    random_button_2 = Button(capital_frame, text='pasar', command=capitales)
+    random_button_2.pack(pady=20)
+
+    #Create a label to signify correct answer
+    global answer_label_two
+
+    answer_label_two = Label(capital_frame, text='', font=("Helvetica", 18))
+    answer_label_two.pack(pady=15)
+
+#Create a button to answer question
+
+    answer_button_two = Button(capital_frame, text='respuesta', command=capital_answer)
+    answer_button_two.pack(pady=5)
+
+#Create a list of capitales
+    global our_capitales
+    our_capitales = ['Buenos Aires', 'Bogotá', 'Lima']
+
+#Generate random number
+    global rando_two
+    rando_two = randint(0, len(our_capitales)-1)
+    capital = "capitales/" + our_capitales[rando_two] + ".png"
+
+#Create our capital images
+    global capital_image
+    capital_image = ImageTk.PhotoImage(Image.open(capital))
+    show_capital = Label(capital_frame, image=capital_image)
+    show_capital.pack(pady=15)
+
 #Hide all previous frames
 def hide_all_frames():
     #Loop thru and destroy all children in previous frames
     for widget in pais_frame.winfo_children():
         widget.destroy()
 
-        for widget in capital_frame.winfo_children():
-            widget.destroy()
+    for widget in capital_frame.winfo_children():
+        widget.destroy()
 
     pais_frame.pack_forget()
     capital_frame.pack_forget()
@@ -107,4 +157,3 @@ pais_frame = Frame(root, width=500, height=500)
 capital_frame = Frame(root, width=500, height=500)
 
 root.mainloop()
-
